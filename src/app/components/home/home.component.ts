@@ -30,7 +30,9 @@ export class HomeComponent implements OnInit {
 
   populateFields(){
     //iterate through optometristService, recalculating
-    this.optometristService.updateFields(this.optionLeft,this.optionRight);
+    var fields = this.optometristService.updateFields();
+    this.optionLeft = fields.optionLeft;
+    this.optionRight = fields.optionRight
   }
 
 }

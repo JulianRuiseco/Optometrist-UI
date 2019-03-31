@@ -32,14 +32,19 @@ export class OptometristAlgorithmService {
   }
 
   calculateFromSettings(toEvaluate:Array<OptometristSetting>){
-    var value = toEvaluate[0];
-
+    var value = toEvaluate[0].getCurrentValue().toFixed(4);
     return value;
   }
 
-  updateFields(optionLeft:any,optionRight:any){
-    optionLeft = this.calculateFromSettings(this.currentSettings);
-    optionRight = this.calculateFromSettings(this.proposedSettings);
+  updateFields(){
+    var fields={
+      optionLeft:"",
+      optionRight:""
+    };
+    fields.optionLeft = this.calculateFromSettings(this.currentSettings);
+    fields.optionRight = this.calculateFromSettings(this.proposedSettings);
+
+    return fields;
   }
 } 
 
@@ -70,23 +75,32 @@ class OptometristSetting {
     this.beta = this.alpha/2;
     this.gamma = 1;
     this.direction = Math.random() >= 0.5;
+    this.relativeAdjustment = 1;
   };
 
   directionCalculation(accept:boolean){
     //sample from student distribution
-
+    if(accept){
+      this.direction = this.direction;
+    }else{
+      this.direction = (!this.direction);
+    }
     //p(direction) = (((v+N)/2-1)! / (v/2-1)!(pi*v)^(N/2))*(1+1/v*(GT*G))
   }
 
   calculateFromChoice(accept:boolean){
     if(accept){
-
+      this.gamma = this.gamma+this.alpha
     }else{
-
+      this.gamma = this.gamma-this.beta;
     }
+
+    this.directionCalculation(accept);
+    this.stepsize = this.baselineA * Math.exp(this.gamma);
+    this.relativeAdjustment = this.relativeAdjustment*(1+this.stepsize);
   }
 
   getCurrentValue(){
-    return this.originalValue + this.relativeAdjustment;
+    return this.originalValue * this.relativeAdjustment;
   }
 }
