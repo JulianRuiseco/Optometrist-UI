@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { OptometristAlgorithmService } from '../../optometrist-algorithm.service';
 
 
 @Component({
@@ -9,18 +10,21 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 })
 export class HomeComponent implements OnInit {
   
-  constructor() {
-    this.name = "";
+  constructor(optometristService:OptometristAlgorithmService) {
+    this.optometristService = optometristService;
+    this.name = this.optometristService.getCounter()
    }
 
   public name:any;
+  public optometristService:OptometristAlgorithmService;
   
 
   ngOnInit() {
   }
 
   onLeftClick(){
-    this.name = "yaay";
+    this.optometristService.incrementCounter();
+    this.name = this.optometristService.getCounter();
   }
 
 }
