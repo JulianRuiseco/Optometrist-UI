@@ -12,7 +12,6 @@ export class HomeComponent implements OnInit {
   
   constructor(optometristService:OptometristAlgorithmService) {
     this.optometristService = optometristService;
-    this.name = this.optometristService.getCounter()
    }
 
   public name:any;
@@ -23,8 +22,6 @@ export class HomeComponent implements OnInit {
   }
 
   onLeftClick(){
-    this.optometristService.incrementCounter();
-    this.name = this.optometristService.getCounter();
   }
 
 }
