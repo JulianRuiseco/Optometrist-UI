@@ -8,10 +8,19 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  
+  constructor() {
+    this.name = "";
+   }
 
-  constructor() { }
+  public name:any;
+  
 
   ngOnInit() {
+  }
+
+  onLeftClick(){
+    this.name = "yaay";
   }
 
 }
