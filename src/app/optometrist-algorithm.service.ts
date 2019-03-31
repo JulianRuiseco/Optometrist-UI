@@ -1,13 +1,24 @@
 import { Injectable } from '@angular/core';
+import { relative } from 'path';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OptometristAlgorithmService {
   currentSettings:Array<OptometristSetting>; 
-  nextSettings:Array<OptometristSetting>;
 
   constructor() { 
+    this.currentSettings.push(new OptometristSetting);
+  }
+
+  triggerSelection(acceptRight:boolean){
+    for(var i =0;i<this.currentSettings.length;i++){ // this goes through and recalculates
+      this.currentSettings[i].calculateFromChoice(acceptRight);
+    }
+  }
+
+  rejectRight(){
+
   }
 }
 
@@ -28,7 +39,10 @@ class OptometristSetting {
                             //(last_relativeAdjustment)*(1+stepsize*direction)
   
 
-  constructor(){};
+  constructor(originalValue:number,baselineA:number){
+    this.originalValue = originalValue;
+    this.baselineA = baselineA;
+  };
 
   p_function(){
     //sample from student distribution
@@ -36,4 +50,15 @@ class OptometristSetting {
     //p(direction) = (((v+N)/2-1)! / (v/2-1)!(pi*v)^(N/2))*(1+1/v*(GT*G))
   }
 
+  calculateFromChoice(accept:boolean){
+    if(accept){
+
+    }else{
+
+    }
+  }
+
+  getCurrentValue(){
+    return this.originalValue + this.relativeAdjustment;
+  }
 }

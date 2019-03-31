@@ -21,7 +21,12 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
   }
 
-  onLeftClick(){
+  triggerSelection(acceptRight:boolean){
+    this.optometristService.triggerSelection(acceptRight);
+  }
+
+  populateFields(){
+    //iterate through optometristService, recalculating
   }
 
 }
