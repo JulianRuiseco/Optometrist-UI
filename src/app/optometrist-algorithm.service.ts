@@ -104,8 +104,10 @@ class OptometristSetting {
     }
 
     this.directionCalculation(accept);
-    this.stepsize = this.baselineA * Math.exp(this.gamma);
-    this.relativeAdjustment = this.relativeAdjustment*(1+this.stepsize);
+    this.stepsize = this.baselineA * this.gamma; //should be log* Math.(exp)
+
+    var dirMultiplier = (this.direction)? 1:-1;
+    this.relativeAdjustment = this.relativeAdjustment*(1+this.stepsize*dirMultiplier);
   }
 
   getCurrentValue(){
@@ -114,13 +116,12 @@ class OptometristSetting {
 
   clone(){
     var Clone = new OptometristSetting(this.originalValue,this.baselineA);
-
     Clone.alpha = this.alpha;
     Clone.beta = this.beta;
     Clone.gamma = this.gamma;
     Clone.stepsize = this.stepsize;
     Clone.direction = this.direction;
-    Clone.relativeAdjustment = this.relativeAdjustment;
+    Clone.relativeAdjustment = this.relativeAdjustment; 
 
     return Clone;
   }
