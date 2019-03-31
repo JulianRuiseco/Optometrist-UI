@@ -1,11 +1,10 @@
 {
-  "name": "angular-electron",
+  "name": "Optometrist-UI",
   "version": "5.1.0",
-  "description": "Angular 7 with Electron (Typescript + SASS + Hot Reload)",
-  "homepage": "https://github.com/maximegris/angular-electron",
+  "description": "Angular 7 with Electron (Typescript + SASS + Hot Reload) + Bootstrap",
   "author": {
-    "name": "Maxime GRIS",
-    "email": "maxime.gris@gmail.com"
+    "name": "Julian Ruiseco",
+    "email": "julian0024@gmail.com"
   },
   "keywords": [
     "angular",
@@ -15,6 +14,7 @@
     "sass"
   ],
   "main": "main.js",
+  "gypfile": true,
   "private": true,
   "scripts": {
     "postinstall": "npm run postinstall:electron && electron-builder install-app-deps",
@@ -71,8 +71,9 @@
     "karma-jasmine-html-reporter": "1.4.0",
     "mocha": "6.0.2",
     "npm-run-all": "4.1.5",
-    "spectron": "5.0.0",
+    "popper": "^1.0.1",
     "rxjs": "6.4.0",
+    "spectron": "5.0.0",
     "ts-node": "7.0.1",
     "tslint": "5.11.0",
     "typescript": "3.2.4",
@@ -82,6 +83,8 @@
   },
   "dependencies": {
     "@ng-bootstrap/ng-bootstrap": "^4.1.0",
-    "bootstrap": "^4.3.1"
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.3.1",
+    "popper.js": "^1.14.7"
   }
 }

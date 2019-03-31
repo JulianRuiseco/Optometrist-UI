@@ -1,8 +1,7 @@
 .containerHome {
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100%;
+
 
   background: url(../../../assets/background.jpg) no-repeat center fixed;
   -webkit-background-size: cover; /* pour anciens Chrome et Safari */
@@ -12,6 +11,8 @@
     color: white;
     margin:0;
     padding:50px 20px;
+    font-size: 45px;
+    text-align: center;
   }
 
 }
