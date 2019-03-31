@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
 
   triggerSelection(acceptRight:boolean){
     this.optometristService.triggerSelection(acceptRight);
+    this.populateFields();
   }
 
   populateFields(){

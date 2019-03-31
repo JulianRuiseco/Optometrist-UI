@@ -6,28 +6,36 @@ import { relative } from 'path';
 })
 export class OptometristAlgorithmService {
   currentSettings:Array<OptometristSetting>; 
-  proposedSettings:Array<OptometristSetting>;
+  proposedLeftSettings:Array<OptometristSetting>;
+  proposedRightSettings:Array<OptometristSetting>;
 
   constructor() { //normally this constructor would be an array
     this.currentSettings = [];
     this.currentSettings.push(new OptometristSetting(2,1));
-    
-    for(var i =0;i<this.currentSettings.length;i++){
-      this.currentSettings[i].calculateFromChoice(false);
-    }
 
-    this.proposedSettings = [];
-    this.proposedSettings.push(new OptometristSetting(2,1));
-    
-    for(var i =0;i<this.proposedSettings.length;i++){
-      this.proposedSettings[i].calculateFromChoice(true);
-    }
+    this.calculateFromCurrent();
   }
 
   triggerSelection(acceptRight:boolean){
-    console.log("triggerred");
+    if(acceptRight){
+      this.currentSettings = this.proposedRightSettings;
+    }else{
+      this.currentSettings = this.proposedRightSettings;
+    }
+
+    this.calculateFromCurrent();
+  }
+
+  calculateFromCurrent(){
+    this.proposedLeftSettings = [];
+    this.proposedRightSettings = [];
+
     for(var i =0;i<this.currentSettings.length;i++){ // this goes through and recalculates
-      this.currentSettings[i].calculateFromChoice(acceptRight);
+      this.proposedLeftSettings.push(this.currentSettings[i].clone());
+      this.proposedRightSettings.push(this.currentSettings[i].clone());
+      
+      this.proposedLeftSettings[i].calculateFromChoice(false);
+      this.proposedRightSettings[i].calculateFromChoice(true);
     }
   }
 
@@ -41,8 +49,8 @@ export class OptometristAlgorithmService {
       optionLeft:"",
       optionRight:""
     };
-    fields.optionLeft = this.calculateFromSettings(this.currentSettings);
-    fields.optionRight = this.calculateFromSettings(this.proposedSettings);
+    fields.optionLeft = this.calculateFromSettings(this.proposedLeftSettings);
+    fields.optionRight = this.calculateFromSettings(this.proposedRightSettings);
 
     return fields;
   }
@@ -102,5 +110,18 @@ class OptometristSetting {
 
   getCurrentValue(){
     return this.originalValue * this.relativeAdjustment;
+  }
+
+  clone(){
+    var Clone = new OptometristSetting(this.originalValue,this.baselineA);
+
+    Clone.alpha = this.alpha;
+    Clone.beta = this.beta;
+    Clone.gamma = this.gamma;
+    Clone.stepsize = this.stepsize;
+    Clone.direction = this.direction;
+    Clone.relativeAdjustment = this.relativeAdjustment;
+
+    return Clone;
   }
 }
