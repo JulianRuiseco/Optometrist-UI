@@ -12,9 +12,12 @@ export class HomeComponent implements OnInit {
   
   constructor(optometristService:OptometristAlgorithmService) {
     this.optometristService = optometristService;
+
+    this.populateFields();
    }
 
-  public name:any;
+  public optionLeft:any;
+  public optionRight:any;
   public optometristService:OptometristAlgorithmService;
   
 
@@ -27,6 +30,7 @@ export class HomeComponent implements OnInit {
 
   populateFields(){
     //iterate through optometristService, recalculating
+    this.optometristService.updateFields(this.optionLeft,this.optionRight);
   }
 
 }
