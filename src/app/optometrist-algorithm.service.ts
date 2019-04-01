@@ -11,7 +11,7 @@ export class OptometristAlgorithmService {
 
   constructor() { //normally this constructor would be an array
     this.currentSettings = [];
-    this.currentSettings.push(new OptometristSetting(2,1));
+    this.currentSettings.push(new OptometristSetting(2,.1));
 
     this.calculateFromCurrent();
   }
@@ -20,7 +20,7 @@ export class OptometristAlgorithmService {
     if(acceptRight){
       this.currentSettings = this.proposedRightSettings;
     }else{
-      this.currentSettings = this.proposedRightSettings;
+      this.currentSettings = this.proposedLeftSettings;
     }
 
     this.calculateFromCurrent();
@@ -66,7 +66,7 @@ class OptometristSetting {
   alpha:number;
   gamma:number; //last_gamma +/- alpha/.5 alpha depending on accept/reject
   stepsize:number; //baselineA * exp(gamma)
-  direction:any; // chosen isotropically p(g) function
+  direction:number; // chosen isotropically p(g) function
 
   //outputs
   relativeAdjustment:number; //this is the important number 
@@ -82,32 +82,38 @@ class OptometristSetting {
     this.alpha = .1;
     this.beta = this.alpha/2;
     this.gamma = 1;
-    this.direction = Math.random() >= 0.5;
+    this.direction = (Math.random() >= 0.5) ? 1: -1;;
     this.relativeAdjustment = 1;
   };
 
   directionCalculation(accept:boolean){
     //sample from student distribution
+    var rand = Math.random();
     if(accept){
       this.direction = this.direction;
+      if(rand<.1){
+        this.direction = -1*this.direction;
+      }
     }else{
-      this.direction = (!this.direction);
+      this.direction = -1*this.direction;
+      if(rand<.1){
+        this.direction = -1*this.direction;
+      }
     }
     //p(direction) = (((v+N)/2-1)! / (v/2-1)!(pi*v)^(N/2))*(1+1/v*(GT*G))
   }
 
   calculateFromChoice(accept:boolean){
     if(accept){
-      this.gamma = this.gamma+this.alpha
+      this.gamma = this.gamma+this.beta
     }else{
-      this.gamma = this.gamma-this.beta;
+      this.gamma = this.gamma-this.alpha;
     }
 
     this.directionCalculation(accept);
-    this.stepsize = this.baselineA * this.gamma; //should be log* Math.(exp)
+    this.stepsize = this.baselineA * Math.exp(this.gamma); //should be log* Math.(exp)
 
-    var dirMultiplier = (this.direction)? 1:-1;
-    this.relativeAdjustment = this.relativeAdjustment*(1+this.stepsize*dirMultiplier);
+    this.relativeAdjustment = this.relativeAdjustment*(1+this.stepsize*this.direction);
   }
 
   getCurrentValue(){
